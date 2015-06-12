@@ -16,9 +16,9 @@ public static class GameObjectExtensions
         ComponentType component = gameObject.GetComponent<ComponentType>();
         if (component == null)
         {
-            gameObject.AddComponent(typeof(ComponentType));
+            component = gameObject.AddComponent(typeof(ComponentType)) as ComponentType;
         }
-        return gameObject.GetComponent<ComponentType>();
+        return component;
     }
 
 }
