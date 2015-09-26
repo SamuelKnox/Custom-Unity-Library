@@ -17,6 +17,9 @@ public class Conversation : MonoBehaviour
     [Tooltip("The (Optional) Text where the conversation will be drawn.  If a custom Text is used, it must be a child of this GameObject.")]
     public Text Text;
 
+    [Tooltip("The (Optional) Image used as a background for the text.  If an image is used, it must be a child of this GameObject")]
+    public Image Image;
+
     private string input;
     private float timeDelay;
     private bool resetConversationAtEnd;
@@ -39,7 +42,7 @@ public class Conversation : MonoBehaviour
     private void Update()
     {
         UpdateConversation();
-        RotateTextIntoView();
+        RotateIntoView();
     }
 
     /// <summary>
@@ -75,6 +78,13 @@ public class Conversation : MonoBehaviour
         }
         this.Text = text;
         this.Text.enabled = false;
+        Image image = transform.GetComponentInChildren<Image>();
+        if (image)
+        {
+            this.Image = image;
+            this.Image.enabled = false;
+            image.transform.position = Vector3.Scale(transform.localScale, DEFAULT_OFFSET_BY_SCALE);
+        }
     }
 
     private void InitializeInputParameters(string input, float miliseconds, bool resetConversation, CanCyclePhraseDelegate CanCyclePhrase, GameObject audience)
@@ -99,6 +109,7 @@ public class Conversation : MonoBehaviour
     private void BeginConversation()
     {
         this.Text.enabled = true;
+        this.Image.enabled = true;
         CycleNextPhrase();
         if (timeDelay > 0)
         {
@@ -148,13 +159,17 @@ public class Conversation : MonoBehaviour
         }
     }
 
-    private void RotateTextIntoView()
+    private void RotateIntoView()
     {
         if (audience == null)
         {
             return;
         }
         Text.transform.forward = transform.position - audience.transform.position;
+        if (Image)
+        {
+            Image.transform.forward = transform.position - audience.transform.position;
+        }
     }
 
     private void CycleNextPhrase(bool automaticCycle = false)
