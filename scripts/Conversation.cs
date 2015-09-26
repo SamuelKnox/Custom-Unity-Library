@@ -20,6 +20,9 @@ public class Conversation : MonoBehaviour
     [Tooltip("The (Optional) Image used as a background for the text.  If an image is used, it must be a child of this GameObject")]
     public Image Image;
 
+    [Tooltip("Offset to use from the GameObject")]
+    public Vector3 Offset = new Vector3(0, 2, 0);
+
     private string input;
     private float timeDelay;
     private bool resetConversationAtEnd;
@@ -68,7 +71,7 @@ public class Conversation : MonoBehaviour
             GameObject textGameObject = new GameObject("Text");
             textGameObject.transform.parent = transform;
             text = textGameObject.AddComponent<Text>();
-            text.transform.position = Vector3.Scale(transform.localScale, DEFAULT_OFFSET_BY_SCALE);
+            text.transform.position = Offset;
             text.transform.localScale = DEFAULT_SCALE;
             text.font = Resources.GetBuiltinResource(typeof(Font), DEFAULT_FONT) as Font;
             text.fontSize = DEFAULT_FONT_SIZE;
@@ -83,7 +86,7 @@ public class Conversation : MonoBehaviour
         {
             this.Image = image;
             this.Image.enabled = false;
-            image.transform.position = Vector3.Scale(transform.localScale, DEFAULT_OFFSET_BY_SCALE);
+            image.transform.position = Offset;
         }
     }
 
